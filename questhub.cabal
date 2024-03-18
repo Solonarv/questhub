@@ -57,41 +57,34 @@ extra-doc-files:    CHANGELOG.md
 common warnings
     ghc-options: -Wall
 
-library
-    -- Import common warning flags.
+library qh-templates
     import:           warnings
+    exposed-modules:  Questhub.Index
+    other-modules:    Templates
+    build-depends:    base
+                    , happstack-hsp
+                    , hsp
+                    , hsx2hs
+    hs-source-dirs:   templates
+    default-language: GHC2021
+    default-extensions: QuasiQuotes, OverloadedStrings
 
-    -- Modules exported by the library.
+library
+    import:           warnings
     exposed-modules:  MyLib
-
-    -- Modules included in this library but not exported.
-    -- other-modules:
-
-    -- LANGUAGE extensions used by modules in this package.
-    -- other-extensions:
     build-depends:    base ^>=4.18.2.0
                     , happstack-foundation
                     , happstack-server
+                    , questhub:qh-templates
 
-    -- Directories containing source files.
     hs-source-dirs:   src
-
-    -- Base language which the package is written in.
     default-language: GHC2021
 
 executable questhub
-    -- Import common warning flags.
     import:           warnings
-
-    -- .hs or .lhs file containing the Main module.
     main-is:          Main.hs
-
     build-depends:
         base ^>=4.18.2.0,
         questhub
-
-    -- Directories containing source files.
     hs-source-dirs:   exe
-
-    -- Base language which the package is written in.
     default-language: GHC2021
