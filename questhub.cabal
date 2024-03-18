@@ -62,9 +62,13 @@ library qh-templates
     exposed-modules:  Questhub.Index
     other-modules:    Templates
     build-depends:    base
+                    , mtl
+                    , text
+                    , happstack-server
                     , happstack-hsp
                     , hsp
                     , hsx2hs
+    build-tool-depends: hsx2hs:hsx2hs
     hs-source-dirs:   templates
     default-language: GHC2021
     default-extensions: QuasiQuotes, OverloadedStrings

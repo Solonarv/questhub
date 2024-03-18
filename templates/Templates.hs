@@ -1,16 +1,20 @@
-module Templates (module X, Page) where
+module Templates
+  ( module Templates
+  , module X
+  , (<$>)
+  , Identity(runIdentity), IsString(fromString), Text
+  , hsx
+  ) where
 
-import Control.Applicative        ((<$>)) as X
-import Control.Monad.Identity     (Identity(runIdentity)) as X
-import Data.String                (IsString(fromString)) as X
-import Data.Text                  (Text) as X
-import HSPT                       as X
-import HSP.Monad                  (HSPT(..)) as X
+import Control.Applicative        ((<$>))
+import Control.Monad.Identity     (Identity(runIdentity))
+import Data.String                (IsString(fromString))
+import Data.Text                  (Text)
+import HSP                        as X
+import HSP.Monad                  (HSPT(..))
 import Happstack.Server.HSP.HTML  as X
 import Happstack.Server.XMLGenT   as X
-import Happstack.Server           ( Request(rqMethod), ServerPartT
-                                  , askRq, nullConf, simpleHTTP
-                                  ) as X
-import Language.Haskell.HSX.QQ    (hsx) as X
+import Happstack.Server           (ServerPartT)
+import Language.Haskell.HSX.QQ    (hsx)
 
 type Fragment = ServerPartT IO XML
