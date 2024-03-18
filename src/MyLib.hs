@@ -1,4 +1,9 @@
-module MyLib (someFunc) where
+module MyLib (main) where
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+import Happstack.Server (nullConf, simpleHTTP, toResponse, ok, ServerPartT)
+
+main :: IO ()
+main = simpleHTTP nullConf handlers
+
+handlers :: ServerPartT IO String
+handlers = ok "Hello, World!"

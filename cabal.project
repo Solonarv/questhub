@@ -1,0 +1,5 @@
+packages: questhub.cabal
+
+with-compiler: ghc-9.6
+
+allow-newer: template-haskell, base
