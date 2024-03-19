@@ -57,16 +57,19 @@ extra-doc-files:    CHANGELOG.md
 common warnings
     ghc-options: -Wall
 
-library qh-templates
-    import:           warnings
-    exposed-modules:  Questhub.Index
+common happstack-deps
+    build-depends: happstack-server
+                 , happstack-foundation
+                 , happstack-hsp
+                 , hsp
+
+library templates
+    import:           warnings, happstack-deps
+    exposed-modules:  Questhub.Index, CommonTemplates
     other-modules:    Templates
     build-depends:    base
                     , mtl
                     , text
-                    , happstack-server
-                    , happstack-hsp
-                    , hsp
                     , hsx2hs
     build-tool-depends: hsx2hs:hsx2hs
     hs-source-dirs:   templates
@@ -74,12 +77,10 @@ library qh-templates
     default-extensions: QuasiQuotes, OverloadedStrings
 
 library
-    import:           warnings
+    import:           warnings, happstack-deps
     exposed-modules:  MyLib
     build-depends:    base ^>=4.18.2.0
-                    , happstack-foundation
-                    , happstack-server
-                    , questhub:qh-templates
+                    , questhub:templates
 
     hs-source-dirs:   src
     default-language: GHC2021

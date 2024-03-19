@@ -17,4 +17,4 @@ import Happstack.Server.XMLGenT   as X
 import Happstack.Server           (ServerPartT)
 import Language.Haskell.HSX.QQ    (hsx)
 
-type Fragment = ServerPartT IO XML
+type Fragment = XMLGenT (HSPT XML (ServerPartT IO)) XML
