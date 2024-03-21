@@ -1,10 +1,11 @@
-{-# OPTIONS_GHC -F -pgmFhsx2hs #-}
 module Questhub.Index where
 
-import Templates
+import Text.Blaze.Html5 qualified as H
+import Text.Blaze.Html5.Attributes qualified as A
 
+import Templates
 import CommonTemplates
 
-index :: Fragment
-index = pageWithTitleAndContent "Index" $
-  <p>Lorem ipsum dolor sit amet...</p>
+index :: Html
+index = pageWithTitleAndContent "Index" do
+  H.p $ "Lorem ipsum dolor sit amet..."

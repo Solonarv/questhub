@@ -57,27 +57,28 @@ extra-doc-files:    CHANGELOG.md
 common warnings
     ghc-options: -Wall
 
+common language
+    default-language: GHC2021
+    default-extensions: BlockArguments, LambdaCase
+
 common happstack-deps
     build-depends: happstack-server
                  , happstack-foundation
-                 , happstack-hsp
-                 , hsp
+                 , blaze-html
 
 library templates
-    import:           warnings, happstack-deps
+    import:           warnings, language, happstack-deps
     exposed-modules:  Questhub.Index, CommonTemplates
     other-modules:    Templates
     build-depends:    base
                     , mtl
                     , text
-                    , hsx2hs
-    build-tool-depends: hsx2hs:hsx2hs
     hs-source-dirs:   templates
     default-language: GHC2021
     default-extensions: QuasiQuotes, OverloadedStrings
 
 library
-    import:           warnings, happstack-deps
+    import:           warnings, language, happstack-deps
     exposed-modules:  MyLib
     build-depends:    base ^>=4.18.2.0
                     , questhub:templates
@@ -86,7 +87,7 @@ library
     default-language: GHC2021
 
 executable questhub
-    import:           warnings
+    import:           warnings, language
     main-is:          Main.hs
     build-depends:
         base ^>=4.18.2.0,

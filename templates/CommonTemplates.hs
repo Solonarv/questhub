@@ -1,19 +1,19 @@
-{-# OPTIONS_GHC -F -pgmFhsx2hs #-}
 module CommonTemplates where
+
+import Text.Blaze.Html5 qualified as H
+import Text.Blaze.Html5.Attributes qualified as A
 
 import Templates
 
-pageWithTitleAndContent :: Text -> Fragment -> Fragment
+pageWithTitleAndContent :: Text -> Html -> Html
 pageWithTitleAndContent title content =
-  <html>
-    <head>
-      <% commonHead %>
-      <title><% title %> | QuestHub</title>
-    </head><body>
-      <h1><% title %></h1>
-      <% content %>
-    </body>
-  </html>
+  H.docTypeHtml do
+    H.head do
+      H.title (toHtml (title <> " | Questhub"))
+      commonHead
+    H.body do
+      H.h1 (toHtml title)
+      content
 
-commonHead :: Fragment
-commonHead = <meta charset="utf-8" />
+commonHead :: Html
+commonHead = H.meta ! A.charset "utf-8"
