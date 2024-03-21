@@ -59,7 +59,10 @@ common warnings
 
 common language
     default-language: GHC2021
-    default-extensions: BlockArguments, LambdaCase
+    default-extensions: BlockArguments, LambdaCase, DerivingStrategies, DerivingVia
+
+common core-deps
+    build-depends: base ^>= 4.18, mtl, text, containers
 
 common happstack-deps
     build-depends: happstack-server
@@ -67,22 +70,20 @@ common happstack-deps
                  , blaze-html
 
 library templates
-    import:           warnings, language, happstack-deps
+    import:           warnings, language, core-deps, happstack-deps
     exposed-modules:  Questhub.Index, CommonTemplates
     other-modules:    Templates
-    build-depends:    base
-                    , mtl
-                    , text
     hs-source-dirs:   templates
     default-language: GHC2021
     default-extensions: QuasiQuotes, OverloadedStrings
 
 library
-    import:           warnings, language, happstack-deps
+    import:           warnings, language, core-deps, happstack-deps
     exposed-modules:  MyLib
-    build-depends:    base ^>=4.18.2.0
-                    , questhub:templates
-
+                    , Questhub.Auth
+                    , Questhub.AppM
+    build-depends:    questhub:templates
+                    , acid-state
     hs-source-dirs:   src
     default-language: GHC2021
 
