@@ -45,17 +45,11 @@ newAccount user pw = do
       put (Accounts nextId accts')
       pure (Just thisId)
 
-updateUser :: UserId -> (Account -> Account) -> Update Accounts ()
-udpateUser target upd = do
+updateUser :: Account -> Update Accounts ()
+udpateUser new = do
   accts <- gets accountsSet
-  case IxSet.getOne $ accts @= target of
-    Nothing -> Just Nothing
-    Just old -> do
-      let new = upd old
-          accts' = IxSet.updateIx target new accts
-      if (accountUserId old /= accountUserId new)
-        then error "updateUser: update function must not change user ID"
-        else modify \db -> db{ accountsSet = accts' }
+  let accts' = IxSet.updateIx (accountUserId new) new (accountsSet accts)
+  modify \db -> db{ accountsSet = accts' }
 
 changeUsername :: UserId -> Username -> Update Accounts (Maybe UserId)
 changeUsername target newName = do
@@ -66,9 +60,14 @@ changeUsername target newName = do
     _ -> error $ "Accounts DB in inconsistent state: multiple users with name " <> show newName
 
 findAccountByName :: Username -> Query Accounts (Maybe Account)
-findAccountByName name = reader \db -> IxSet.getOne $ accountsSet db @= name
+findAccountByName name = reader \db -> case IxSet.toList $ accountsSet db @= name of
+    [] -> Nothing
+    [found] -> Just found
+    dupes -> error (
+        "Accounts DB in inconsistent state: multiple users with name "
+      <> show name <> ", ids: " <> map (show . accountUserId) dupes)
 
 findAccountById :: UserId -> Query Accounts (Maybe Account)
 findAccountById target = reader \db -> IxSet.getOne $ accountsSet db @= target
 
-$(makeAcidic ''Accounts ['newAccount, 'changeUsername, 'findAccountByName, 'findAccountById])
+$(makeAcidic ''Accounts ['newAccount, 'updateUser, 'findAccountByName, 'findAccountById])
